@@ -1,17 +1,18 @@
 # encoding = utf-8
-import jieba
 import csv
-import re, json
+import json
+import re
+
+import jieba
 
 stop_word_path = "百度停用词表.txt"
-stop_word_list = []
 with open(stop_word_path, 'r', encoding='UTF-8') as f:
     s = f.read()
     stop_word_list = s.split('\n')
 
 
 def read_text(path):
-    doc_id, doc_url, doc_title, content = []
+    doc_id, doc_url, doc_title, content = [], [], [], []
     with open(path, 'r', encoding='UTF-8') as f:
         reader = csv.reader(f)
         for r in reader:
@@ -33,11 +34,11 @@ def word_seg(content):
 
 
 def write_dict(d, string, target, id):
-    words = word_seg (string)
+    words = word_seg(string)
     for word in words:
-        if word not in d.keys ():
+        if word not in d.keys():
             d[target][word] = {id: 1}
-        elif id not in d[word].keys ():
+        elif id not in d[word].keys():
             d[target][word][id] = 1
         else:
             d[target][word][id] += 1
@@ -50,7 +51,7 @@ def dict_gen(path):
         write_dict(d, content, 'content', doc_id[i])
         write_dict(d, doc_title[i], 'title', doc_id[i])
     str_json = json.dump(d)
-    with open("'" + path+"'分词.json") as f:
+    with open("'" + path+"'分词.json", 'w', encoding='UTF-8') as f:
         f.write(str_json)
 
 
