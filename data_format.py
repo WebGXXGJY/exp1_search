@@ -1,3 +1,4 @@
+# encoding = utf-8
 import divide
 import pandas as pd
 import math
@@ -5,19 +6,19 @@ import math
 
 max_len = 11
 data_relate = pd.read_csv('./webinfo-信息检索实验数据/查询-文档相关性标签.csv')
-data_doc = pd.red_csv('./webinfo-信息检索实验数据/文档数据集.csv')
+data_doc = pd.read_csv('./webinfo-信息检索实验数据/文档数据集.csv')
 n = len(data_doc)
 qid = 0
 data_relate['qid'] = 0
 query = []
 
-dic = divide.dict_get('分词.json')
+dic = divide.dict_get('文档数据集.csv标题文章分词.txt')
 for index, row in data_relate.iterrows():
     if row['query'] not in query:
         qid += 1
         row['qid'] = qid
         query.append(row['query'])
-    string = row['label'] + ' qid:' + str(row['qid'])
+    string = str(row['label']) + ' qid:' + str(row['qid'])
     q_word = divide.word_seg(row['query'])
     n_words = len(q_word)
 
