@@ -22,7 +22,7 @@ def read_text(path):
     return doc_id, doc_url, doc_title, content
 
 
-def divide(content):
+def word_seg(content):
     l = jieba.lcut_for_search(content)
     result = []
     for term in l:
@@ -32,22 +32,23 @@ def divide(content):
     return result
 
 
-def write_dict(string, target):
-    pass
+def write_dict(d, string, target, id):
+    words = word_seg (string)
+    for word in words:
+        if word not in d.keys ():
+            d[target][word] = {id: 1}
+        elif id not in d[word].keys ():
+            d[target][word][id] = 1
+        else:
+            d[target][word][id] += 1
 
 
 def dict_gen(path):
     doc_id, doc_url, doc_title, doc_content = read_text(path)
     d = {'title': {}, 'content': {}}
     for i, content in enumerate(doc_content):
-        words = divide(content)
-        for word in words:
-            if word not in d.keys():
-                d['content'][word] = {doc_id[i]: 1}
-            elif doc_id[i] not in d[word].keys():
-                d['content'][word][doc_id[i]] = 1
-            else:
-                d['content'][word][doc_id[i]] += 1
+        write_dict(d, content, 'content', doc_id[i])
+        write_dict(d, doc_title[i], 'title', doc_id[i])
     str_json = json.dump(d)
     with open("'" + path+"'分词.json") as f:
         f.write(str_json)
