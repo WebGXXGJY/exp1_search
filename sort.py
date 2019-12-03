@@ -6,9 +6,9 @@ import numpy as np
 
 max_len = 11
 queries = pd.read_csv('./测试数据/test_querys.csv')
-doc_ids = pd.read_csv('./webinfo-信息检索实验数据/文档数据集.csv', usecols=['doc_id'])
-n = 21485
-dic = divide.dict_get('文档数据集.csv标题文章分词.txt')
+doc_ids = pd.read_csv('./测试数据/test_docs.csv', usecols=['doc_id'])
+n = len(doc_ids)
+dic = divide.dict_get('test_docs.csv标题文章分词.txt')
 # result0 = [[] for i in range(26)]
 result = pd.DataFrame()
 
@@ -41,7 +41,8 @@ for index, row in queries.iterrows():
         q_result.append(term)
     q_result1 = pd.DataFrame(q_result)
     q_result0 = q_result1.nlargest(100, 25)
-    result.append(q_result0, ignore_index=True)
+    result = result.append(q_result0, ignore_index=True)
+    print('query', index, 'done')
 
 result.to_csv("result.csv", index=False)
 
