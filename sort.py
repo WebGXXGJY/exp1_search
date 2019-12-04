@@ -13,7 +13,7 @@ dic = divide.dict_get('test_docs.csv标题文章分词.txt')
 result = pd.DataFrame()
 
 
-def tf_idf_cal(word, target, id_doc):
+def tf_idf_cal(word, target, id_doc, doc_num):
     if word not in dic[target].keys():
         return 0
     elif id_doc not in dic[target][word].keys():
@@ -21,7 +21,7 @@ def tf_idf_cal(word, target, id_doc):
     else:
         tf = dic[target][word][id_doc]
         df = len(dic[target][word])
-        tf_idf = (1 + math.log10(tf)) * (math.log10(n / df))
+        tf_idf = (1 + math.log10(tf)) * (math.log10(doc_num / df))
         return tf_idf
 
 
@@ -33,8 +33,8 @@ for index, row in queries.iterrows():
     for tmp, doc_id in doc_ids.iterrows():
         term = [0, row['query_id']] + [0.0]*max_len*2 + [doc_id['doc_id'], 0]
         for idx, words in enumerate(q_word):
-            ti1 = tf_idf_cal(words, 'title', doc_id['doc_id'])
-            ti2 = tf_idf_cal(words, 'content', doc_id['doc_id'])
+            ti1 = tf_idf_cal(words, 'title', doc_id['doc_id'], n)
+            ti2 = tf_idf_cal(words, 'content', doc_id['doc_id'], n)
             term[idx + 2] = ti1
             term[max_len + idx + 2] = ti2
         term[25] = sum(term[2:24])
@@ -44,6 +44,6 @@ for index, row in queries.iterrows():
     result = result.append(q_result0, ignore_index=True)
     print('query', index, 'done')
 
-result.to_csv("result.csv", index=False)
+result.to_csv("./data/result.csv", index=False)
 
 
