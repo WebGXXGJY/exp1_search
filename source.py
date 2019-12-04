@@ -30,5 +30,7 @@ print('Start')
 model.fit(TX, Ty, Tqids, monitor=monitor)
 print('End')
 Epred = model.predict(EX)
-print('Random ranking:', metric.calc_mean_random(Eqids, Ey))
-print('Our model:', metric.calc_mean(Eqids, Ey, Epred))
+
+with open('Epred.txt', 'w') as fp:
+    fp.write('\n'.join([str(f) for f in Epred]))
+

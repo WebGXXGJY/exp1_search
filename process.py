@@ -1,5 +1,8 @@
 import csv
-import random,time
+import random
+import time
+import pyltr
+
 
 def feature_process(path):
     fp = open(path, 'r')
@@ -22,15 +25,23 @@ def feature_process(path):
 
 
 def sample_validation(path):
-    fp = open(path, 'r')
-    s = fp.read()
-    l = s.split('\n')
+
+    with open(path) as fp:
+        X, Y, qids, _ = pyltr.data.letor.read_dataset(fp)
+    l = []
+    for qid in qids:
+        if qid not in l:
+            l.append(qid)
     random.seed(time.time())
-    valid_list = random.sample(range(len(l)), k=int(len(l) / 5))
+    valid_list = random.sample(l, k=int(len(l) / 6))
     valid = []
     train = []
-    for i, row in enumerate(l):
-        if i in valid_list:
+    with open(path) as fp:
+        dataset = fp.read().split('\n')
+    for i, row in enumerate(dataset):
+        if i >= len(qids):
+            break
+        if qids[i] in valid_list:
             valid.append(row)
         else:
             train.append(row)
