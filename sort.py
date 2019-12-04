@@ -31,13 +31,13 @@ for index, row in queries.iterrows():
     q_result = []
 
     for tmp, doc_id in doc_ids.iterrows():
-        term = [0, row['query_id']] + [0.0]*max_len*2 + [doc_id['doc_id'], 0]
+        term = [0, row['query_id']] + [0.0]*max_len*2 + [0, doc_id['doc_id']]
         for idx, words in enumerate(q_word):
             ti1 = tf_idf_cal(words, 'title', doc_id['doc_id'], n)
             ti2 = tf_idf_cal(words, 'content', doc_id['doc_id'], n)
             term[idx + 2] = ti1
             term[max_len + idx + 2] = ti2
-        term[25] = sum(term[2:24])
+        term[24] = sum(term[2:24])
         q_result.append(term)
     q_result1 = pd.DataFrame(q_result)
     q_result0 = q_result1.nlargest(100, 25)
