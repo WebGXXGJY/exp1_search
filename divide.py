@@ -55,7 +55,7 @@ def dict_gen_title_content(path):
             print('%d\n' % i)
         write_dict(d, content, 'content', doc_id[i])
         write_dict(d, doc_title[i], 'title', doc_id[i])
-    fp = open('../' + path+"标题文章分词.json", 'w', encoding='UTF-8')
+    fp = open(path+"标题文章分词.json", 'w', encoding='UTF-8')
     json.dump(d, fp)
     fp.close()
 
@@ -67,6 +67,6 @@ def dict_get(path):
 
 
 if __name__ == "__main__":
-    dict_gen_title_content("webinfo-信息检索实验数据.zip/文档数据集.csv")
+    dict_gen_title_content("测试数据/test_docs.csv")
 
 
