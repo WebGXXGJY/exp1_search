@@ -13,10 +13,9 @@ def feature_process(path):
         if i == 0:
             continue
         r[1] = 'qid:' + r[1]
-        for j in range(2, len(r) - 2):
+        for j in range(2, len(r) - 1):
             r[j] = '%d:%s' % (j - 1, r[j])
-        r[-2] = '#docid = %s' % r[-2]
-        r[-1] = 'sum = %s' % r[-1]
+        r[-1] = '#docid = %s' % r[-1]
         l.append(' '.join(r))
     fp.close()
     s = '\n'.join(l)
@@ -52,5 +51,5 @@ def sample_validation(path):
 
 
 if __name__ == "__main__":
-    # feature_process('result.csv')
-    sample_validation('train_data.txt')
+    feature_process('data/result.csv')
+    # sample_validation('data/train_data.csv.txt')
